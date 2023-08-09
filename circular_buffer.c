@@ -4,12 +4,12 @@
 
 int circular_buffer_create(struct circular_buffer_t *a, int N) {
     /* checking function parameters */
-    if(a == NULL || N<=0) {
+    if (a == NULL || N<=0) {
         return 1;
     }
     int *alloc = (int *)malloc(N * sizeof(int));
     /* checking memory allocation status */
-    if(alloc == NULL) {
+    if (alloc == NULL) {
         return 2;
     }
     a->ptr = alloc;
@@ -22,17 +22,17 @@ int circular_buffer_create(struct circular_buffer_t *a, int N) {
 
 int circular_buffer_create_struct(struct circular_buffer_t **cb, int N) {
     /* checking function parameters */
-    if(cb == NULL || N<=0) {
+    if (cb == NULL || N<=0) {
         return 1;
     }
     *cb = malloc(sizeof(struct circular_buffer_t));
     /* checking memory allocation status */
-    if(*cb == NULL) {
+    if (*cb == NULL) {
         return 2;
     }
     int res = circular_buffer_create(*cb,N);
     /* checking function result */
-    if(res == 1 || res == 2) {
+    if (res == 1 || res == 2) {
         free(*cb);
         return 2;
     }
@@ -40,13 +40,13 @@ int circular_buffer_create_struct(struct circular_buffer_t **cb, int N) {
 }
 
 void circular_buffer_destroy(struct circular_buffer_t *a) {
-    if(a != NULL) {
+    if (a != NULL) {
         free(a->ptr);
     }
 }
 
 void circular_buffer_destroy_struct(struct circular_buffer_t **a) {
-    if(a != NULL) {
+    if (a != NULL) {
         circular_buffer_destroy(*a);
         free(*a);
     }
@@ -54,14 +54,14 @@ void circular_buffer_destroy_struct(struct circular_buffer_t **a) {
 
 int circular_buffer_push_back(struct circular_buffer_t *cb, int value) {
     /* checking function parameters */
-    if(cb == NULL || cb->capacity < 1 || cb->end > cb->capacity || cb->begin < 0 || cb->begin > cb->capacity || cb->end < 0) {
+    if (cb == NULL || cb->capacity < 1 || cb->end > cb->capacity || cb->begin < 0 || cb->begin > cb->capacity || cb->end < 0) {
         return 1;
     }
     *(cb->ptr + cb->end) = value;
-    if(cb->full == 1) {
+    if (cb->full == 1) {
         cb->end++;
         cb->begin++;
-        if(cb->end == cb->capacity){
+        if (cb->end == cb->capacity){
             cb->end = 0;
             cb->begin = 0;
         }
@@ -69,10 +69,10 @@ int circular_buffer_push_back(struct circular_buffer_t *cb, int value) {
     else {
         cb->end++;
     }
-    if(cb->end == cb->capacity) {
+    if (cb->end == cb->capacity) {
         cb->end = 0;
     }
-    if(cb->end == cb->begin) {
+    if (cb->end == cb->begin) {
         cb->full = 1;
     }
     return 0;
@@ -80,25 +80,25 @@ int circular_buffer_push_back(struct circular_buffer_t *cb, int value) {
 
 int circular_buffer_pop_front(struct circular_buffer_t *a, int *err_code) {
     /* checking function parameters */
-    if(a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
+    if (a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
         if(err_code != NULL) {
             *err_code = 1;
         }
         return 1;
     }
     /* checking if buffer is empty - if it is, there is nothing to pop */
-    if(circular_buffer_empty(a) == 1) {
+    if (circular_buffer_empty(a) == 1) {
         if(err_code != NULL) {
             *err_code = 2;
         }
         return 2;
     }
-    if(err_code != NULL) {
+    if (err_code != NULL) {
         *err_code = 0;
     }
     int deleted = *(a->ptr + a->begin);
     a->begin++;
-    if(a->begin == a->capacity) {
+    if (a->begin == a->capacity) {
         a->begin = 0;
     }
     a->full = 0;
@@ -107,24 +107,24 @@ int circular_buffer_pop_front(struct circular_buffer_t *a, int *err_code) {
 
 int circular_buffer_pop_back(struct circular_buffer_t *a, int *err_code) {
     /* checking function parameters */
-    if(a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin > a->capacity || a->begin < 0 || a->end < 0) {
+    if (a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin > a->capacity || a->begin < 0 || a->end < 0) {
         if(err_code != NULL) {
             *err_code = 1;
         }
         return 1;
     }
     /* checking if buffer is empty - if it is, there is nothing to pop */
-    if(circular_buffer_empty(a) == 1) {
+    if (circular_buffer_empty(a) == 1) {
         if(err_code != NULL) {
             *err_code = 2;
         }
         return 2;
     }
-    if(err_code != NULL) {
+    if (err_code != NULL) {
         *err_code = 0;
     }
     a->end--;
-    if(a->end < 0) {
+    if (a->end < 0) {
         a->end = a->capacity - 1;
     }
     int deleted = *(a->ptr + a->end);
@@ -134,10 +134,10 @@ int circular_buffer_pop_back(struct circular_buffer_t *a, int *err_code) {
 
 int circular_buffer_empty(const struct circular_buffer_t *a) {
     /* checking function parameters */
-    if(a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
+    if (a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
         return -1;
     }
-    if(a->begin == a->end && a->full == 0) {
+    if (a->begin == a->end && a->full == 0) {
         return 1;
     }
     return 0;
@@ -145,10 +145,10 @@ int circular_buffer_empty(const struct circular_buffer_t *a) {
 
 int circular_buffer_full(const struct circular_buffer_t *a) {
     /* checking function parameters */
-    if(a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
+    if (a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
         return -1;
     }
-    if(a->begin == a->end && a->full == 1) {
+    if (a->begin == a->end && a->full == 1) {
         return 1;
     }
     return 0;
@@ -156,19 +156,19 @@ int circular_buffer_full(const struct circular_buffer_t *a) {
 
 void circular_buffer_display(const struct circular_buffer_t *a) {
     /* checking function parameters */
-    if(a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
+    if (a == NULL || a->capacity < 1 || a->end > a->capacity || a->begin < 0 || a->begin > a->capacity || a->end < 0) {
         return;
     }
     /* checking if buffer is empty - if it is, there is nothing to display, and function should do nothing */
-    if(circular_buffer_empty(a) == 1) {
+    if (circular_buffer_empty(a) == 1) {
         return;
     }
     int number = a->begin;
-    if(circular_buffer_full(a) == 1) {
+    if (circular_buffer_full(a) == 1) {
         printf("%d ",*(a->ptr+number));
         number = (number+1) % a->capacity;
     }
-    for(;number!= a->end;number = (number+1) % a->capacity) {
+    for(;number != a->end;number = (number+1) % a->capacity) {
         printf("%d ",*(a->ptr + number));
     }
 }
