@@ -4,7 +4,7 @@
 This structure lends itself easily to buffering data streams.
 There were early circular buffer implementations in hardware (keyboard buffer) or for example in oscilloscope.
 
-Files in project:
+Project structure:
 - **main.c** - console demo of buffer functionality
 - **circular_buffer.c** - helper functions definitions
 - **circular_buffer.h** - main structure and helper functions declarations
