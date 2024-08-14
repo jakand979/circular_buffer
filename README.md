@@ -10,6 +10,5 @@ Files in project:
 - **circular_buffer.c** - helper functions definitions
 - **circular_buffer.h** - main structure and helper functions declarations
 
-You can test this program by cloning it to you chosen directory 
-**git clone https://github.com/jakand979/circular_buffer.git**
+You can test this program by cloning it to you chosen directory with command: **git clone https://github.com/jakand979/circular_buffer.git**
 
